@@ -81,7 +81,9 @@ class ProjectileLaunchCoordinator(
                 val player = event.entity as? Player
                 val projectile = event.projectile as? Projectile
                 val bow = event.bow
-                if (player != null && projectile != null && bow?.type == Material.BOW &&
+                // Native BowItem dispatch identifies the weapon, including registered custom bows.
+                // Material.BOW would exclude those despite their identical native shooting behaviour.
+                if (player != null && projectile != null && bow != null &&
                     !projectile.isValid && projectile.shooter == player &&
                     projectile.type.name in setOf("ARROW", "SPECTRAL_ARROW", "TIPPED_ARROW") &&
                     identity.nativeDispatch(true) && identity.mainHand(player, bow)
